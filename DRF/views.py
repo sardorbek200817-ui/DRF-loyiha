@@ -1,30 +1,21 @@
-from django.shortcuts import render
-from rest_framework import serializers
-from .serializer import ProductSerializer
+from .serializer import NewsListCreateSerializers , NewsListSerializers
 from rest_framework.views import APIView
-from rest_framework.generics import RetrieveAPIView , DestroyAPIView , CreateAPIView , UpdateAPIView , ListAPIView
-from .models import Product
+from rest_framework.generics import RetrieveAPIView , DestroyAPIView , CreateAPIView , UpdateAPIView , ListAPIView,ListCreateAPIView
+from .models import News
 
 
-class ProductDestroy(DestroyAPIView):
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+
+class NewsListCreateViews(ListCreateAPIView):
+        queryset = News.objects.all()
+
+        def get_serializer_class(self):
+            if self.request.method == "POST":
+                return NewsListCreateSerializers
+            return NewsListSerializers
 
 
-class ProductRetrieve(RetrieveAPIView):
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+    
+
+    
 
 
-class ProductCreate(CreateAPIView):
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
-
-
-class ProductUpdate(UpdateAPIView):
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
-
-class ProductList(ListAPIView):
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()

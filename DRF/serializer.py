@@ -1,13 +1,16 @@
 from rest_framework import serializers
-from .models import Product
+from .models import News
 
-class ProductSerializer(serializers.ModelSerializer):
+class NewsListSerializers(serializers.ModelSerializer):
     class Meta:
-        model = Product
-        fields = ["id" , "name" , "price", "dosc"]
+        model = News
+        fields = ["id", "title" , "author" , "content" , "category" , "time" , "views" , "image"]
 
 
-
+class NewsListCreateSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = News
+        fields = ["id","title" , "author" , "content" , "category" ,"image"]
 
 
 
