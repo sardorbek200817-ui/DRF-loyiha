@@ -15,5 +15,4 @@ class NewsListCreateSerializers(serializers.ModelSerializer):
 
 
 
-
         
