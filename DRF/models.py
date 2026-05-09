@@ -7,6 +7,8 @@ class User_profile(models.Model):
     class Status(models.TextChoices):
         ADMIN = "A" ,"Admin"
         USER = "U" , "User"
+        Manager = "M" , "Manager"
+        
 
     user = models.OneToOneField(User , on_delete=models.CASCADE)
     status = models.CharField(choices=Status.choices , default=Status.USER)

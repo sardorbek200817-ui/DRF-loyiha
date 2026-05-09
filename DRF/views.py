@@ -4,6 +4,12 @@ from rest_framework.generics import RetrieveAPIView , DestroyAPIView , CreateAPI
 from .models import News , Likes , User_profile
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated , AllowAny
+from rest_framework.authtoken.models import Token
+from rest_framework import generics
+from .permission import IsOwnr , IsManager
+from rest_framework import status
+from rest_framework import viewsets, permissions
 
 
 class NewsLC(viewsets.ModelViewSet):
@@ -16,7 +22,8 @@ class NewsLC(viewsets.ModelViewSet):
         serializer = self.get_serializer(news , many=True)
 
         return Response(serializer.data)
-    
+
+
 
     @action(detail=True , methods=["post"])
 
@@ -30,7 +37,6 @@ class NewsLC(viewsets.ModelViewSet):
             )
 
             return Response(data="like bosildi")
-
             
         except:
 
@@ -38,14 +44,28 @@ class NewsLC(viewsets.ModelViewSet):
 
 
 
+# 1 topshiriq
+
+class Sen(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = NewsListSerializers
+    permission_classes = [IsOwnr]
+    queryset = News.objects.all()
 
 
+# 3 topshiriq
+class U(viewsets.ModelViewSet):
+    queryset = News.objects.all()
+    serializer_class = NewsListSerializers
 
-
-
-
-
-
+    def get_permissions(self):
+        if self.action in ["list" , "retrive"]:
+            return [AllowAny()]
+        if self.action == "create":
+            return [IsAuthenticated()]
+        if self.action == ["update" , "destroy"]:
+            return [IsAuthenticated() | IsOwnr()]
+        
+        return [IsAuthenticated()]
 
 
 
