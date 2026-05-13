@@ -10,7 +10,7 @@ from rest_framework import generics
 from .permission import IsOwnr , IsManager
 from rest_framework import status
 from rest_framework import viewsets, permissions
-
+from rest_framework import filters , permissions
 
 class NewsLC(viewsets.ModelViewSet):
     queryset = News.objects.all()
@@ -64,11 +64,18 @@ class U(viewsets.ModelViewSet):
             return [IsAuthenticated()]
         if self.action == ["update" , "destroy"]:
             return [IsAuthenticated() | IsOwnr()]
-        
+
         return [IsAuthenticated()]
 
 
 
+
+class NewLCView111(viewsets.ModelViewSet):
+    queryset = News.objects.all()
+    serializer_class = NewsListSerializers
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["title" , "author__full_name" , "content"]
+    permission_classes = [permissions.AllowAny,]
 
 
 
